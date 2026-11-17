@@ -1,11 +1,12 @@
 package estruturas;
-public class NoArvore {
 
-    Voo voo;
+import model.InformacaoDoVoo;
+public class NoArvore {
+    InformacaoDoVoo voo;
     NoArvore esquerda;
     NoArvore direita;
 
-    public NoArvore(Voo voo) {
+    public NoArvore(InformacaoDoVoo voo) {
         this.voo = voo;
         this.esquerda = null;
         this.direita = null;

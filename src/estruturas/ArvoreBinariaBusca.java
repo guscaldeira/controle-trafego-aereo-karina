@@ -12,7 +12,7 @@ public class ArvoreBinariaBusca {
         return raiz == null;
     }
 
-    public boolean inserir(Voo voo) {
+    public boolean inserir(InformacaoDoVoo voo) {
         if (buscar(voo.getCodigo()) != null) {
             return false;
         }
@@ -20,7 +20,7 @@ public class ArvoreBinariaBusca {
         return true;
     }
 
-    private NoArvore inserirRec(NoArvore atual, Voo voo) {
+    private NoArvore inserirRec(NoArvore atual, InformacaoDoVoo voo) {
         if (atual == null) {
             return new NoArvore(voo);
         }
@@ -33,7 +33,7 @@ public class ArvoreBinariaBusca {
         return atual;
     }
 
-    public Voo buscar(String codigo) {
+    public InformacaoDoVoo buscar(String codigo) {
         NoArvore atual = raiz;
         while (atual != null) {
             int cmp = codigo.compareTo(atual.voo.getCodigo());
