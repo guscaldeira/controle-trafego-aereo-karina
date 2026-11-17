@@ -1,3 +1,6 @@
+package estruturas;
+
+import model.InformacaoDoVoo;
 public class FilaPista {
 
     private NoFila inicio;
@@ -19,7 +22,7 @@ public class FilaPista {
     }
 
     
-    public void adicionar(Voo voo) {
+    public void adicionar(InformacaoDoVoo voo) {
         NoFila novo = new NoFila(voo);
         if (estaVazia()) {
             inicio = novo;
@@ -31,11 +34,11 @@ public class FilaPista {
     }
 
     
-    public Voo remover() {
+    public InformacaoDoVoo remover() {
         if (estaVazia()) {
             return null;
         }
-        Voo voo = inicio.getVoo();
+        InformacaoDoVoo voo = inicio.getVoo();
         inicio = inicio.getProximo();
         if (inicio == null) {
             fim = null;
@@ -44,11 +47,11 @@ public class FilaPista {
         return voo;
     }
 
-    public Voo primeiro() {
+    public InformacaoDoVoo primeiro() {
         return estaVazia() ? null : inicio.getVoo();
     }
 
-    public Voo buscar(String codigo) {
+    public InformacaoDoVoo buscar(String codigo) {
         NoFila atual = inicio;
         while (atual != null) {
             if (atual.getVoo().getCodigo().equalsIgnoreCase(codigo)) {
@@ -72,7 +75,7 @@ public class FilaPista {
         return -1;
     }
 
-    public Voo removerPorCodigo(String codigo) {
+    public InformacaoDoVoo removerPorCodigo(String codigo) {
         NoFila anterior = null;
         NoFila atual = inicio;
 

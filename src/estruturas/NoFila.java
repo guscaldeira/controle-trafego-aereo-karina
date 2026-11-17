@@ -1,14 +1,17 @@
+package estruturas;
+
+import model.InformacaoDoVoo;
 public class NoFila {
 
-    private Voo voo;
+    private InformacaoDoVoo voo;
     private NoFila proximo;
 
-    public NoFila(Voo voo) {
+    public NoFila(InformacaoDoVoo voo) {
         this.voo = voo;
         this.proximo = null;
     }
 
-    public Voo getVoo() {
+    public InformacaoDoVoo getVoo() {
         return voo;
     }
 
