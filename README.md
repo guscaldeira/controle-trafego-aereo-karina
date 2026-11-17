@@ -1,68 +1,90 @@
-# Pilha de Log — Tema 03: Controle de Tráfego Aéreo
+# Controle de Tráfego Aéreo
 
-Parte do trabalho de Estruturas de Dados em Java. Aqui está a **Pilha** usada como
-**registro (log) de eventos críticos para auditoria rápida**.
+Sistema em Java que simula o controle de tráfego aéreo de um aeroporto, usando **estruturas de dados implementadas manualmente**: Árvore Binária de Busca, Fila e Pilha.
 
-## Arquivos
+Trabalho da disciplina de Estruturas de Dados (Tema 03: Controle de Tráfego Aéreo).
 
-| Arquivo | Papel |
-|---|---|
-| `NoPilha.java` | Nó da pilha: guarda o evento, a data/hora e o ponteiro para o nó de baixo |
-| `PilhaLog.java` | A pilha em si, com todos os métodos |
+> Nenhuma `Collection` do Java foi usada (`ArrayList`, `LinkedList`, `Stack`, `Queue` etc.). Tudo é feito com nós e ponteiros.
 
-## Por que uma Pilha?
+## Estruturas e o papel de cada uma
 
-A pilha é **LIFO** (Last In, First Out): o último evento registrado é o primeiro a sair.
-Num log de auditoria isso é ideal, porque o que mais interessa é o que aconteceu **agora**
-(o evento mais recente fica no topo, sem precisar percorrer nada).
-
-## Como funciona
-
-```
-topo → [Evento 3] → [Evento 2] → [Evento 1] → null
-```
-
-- Cada nó aponta para o que foi empilhado antes dele.
-- `inserir` coloca um novo nó no topo.
-- `remover` tira o nó do topo.
-- Nenhuma `Collection` do Java foi usada (regra do trabalho): tudo é feito com nós e ponteiros.
-
-## Métodos
-
-| Método | O que faz | Custo |
+| Estrutura | Classe | Papel no sistema |
 |---|---|---|
-| `inserir(String evento)` | Empilha um evento com data/hora atual | O(1) |
-| `remover()` | Desempilha e devolve o evento do topo (`null` se vazia) | O(1) |
-| `topo()` | Mostra o evento do topo sem remover | O(1) |
-| `buscar(String termo)` | Acha o evento mais recente que contém o termo (ex.: código do voo) | O(n) |
-| `listar()` | Imprime todos os eventos, do mais recente ao mais antigo | O(n) |
-| `estaVazia()` / `tamanho()` | Controle da pilha | O(1) |
+| **ABB** (Árvore Binária de Busca) | `ArvoreBinariaBusca` | Guarda os voos programados. A chave é o **código do voo**, o que permite busca rápida |
+| **Fila** (FIFO) | `FilaPista` | Pista de decolagem/aterrissagem, respeitando a ordem de chegada |
+| **Pilha** (LIFO) | `PilhaLog` | Log de eventos críticos para auditoria rápida (o mais recente fica no topo) |
 
-## Exemplo de uso
+## Como as estruturas interagem
 
-```java
-PilhaLog log = new PilhaLog();
+```
+Cadastro do voo ──► ABB (voos programados)
+                     │
+        Solicita pista: busca o voo na ABB
+                     │
+                     ▼
+                Fila da pista ──► Pista liberada (voo sai da fila)
 
-log.inserir("Voo AZ123: arremetida por mau tempo");
-log.inserir("Voo LA456: emergência declarada (falha de motor)");
-log.inserir("Pista 2 interditada");
-
-log.listar();                       // mostra do mais recente ao mais antigo
-System.out.println(log.topo());     // Pista 2 interditada
-System.out.println(log.buscar("AZ123")); // acha o evento do voo AZ123
-log.remover();                      // tira "Pista 2 interditada"
+Eventos críticos (emergência, arremetida, pista interditada, voo cancelado)
+                     │
+                     ▼
+              Pilha de log (auditoria)
 ```
 
-## Como se encaixa no sistema
+1. O voo é cadastrado na **ABB**.
+2. Ao pedir pista, o sistema **busca o voo na ABB** pelo código. Se ele existir, entra na **Fila**.
+3. Quando a pista é liberada, o primeiro da **Fila** sai.
+4. Qualquer evento crítico é registrado na **Pilha**, com data e hora.
+5. Ao cancelar um voo, ele é removido da **ABB** e o cancelamento é registrado na **Pilha**.
 
-- **ABB**: cadastro dos voos programados (busca por código do voo).
-- **Fila**: pista de decolagem/aterrissagem (ordem de chegada).
-- **Pilha (este arquivo)**: sempre que algo crítico acontece (emergência, arremetida,
-  pista interditada, voo cancelado), o sistema chama `log.inserir(...)`.
+## Funcionalidades
 
-## Perguntas que a professora pode fazer
+- Cadastrar, buscar e remover voos (ABB)
+- Listar os voos em **in-ordem**, **pré-ordem** e **pós-ordem** (ABB)
+- Colocar um voo na fila da pista, ver a posição e liberar a pista (Fila)
+- Registrar eventos críticos e consultar o log, do mais recente ao mais antigo (Pilha)
 
-- **Por que pilha e não fila para o log?** Porque na auditoria o mais recente é o mais importante; a pilha dá acesso a ele em O(1).
-- **O que acontece ao remover de uma pilha vazia?** O método devolve `null`, sem erro.
-- **Qual o custo de inserir e remover?** O(1), só mexem no topo.
-- **Por que `buscar` é O(n)?** Pode precisar percorrer todos os nós até achar o termo.
+## Métodos de cada estrutura
+
+**ABB**: `inserir`, `buscar`, `remover` (trata nó folha, nó com 1 filho e nó com 2 filhos), `emOrdem`, `preOrdem`, `posOrdem`, `percursos`
+
+**Fila**: `adicionar`, `buscar`, `remover`, `listar` (além de `primeiro`, `posicao` e `removerPorCodigo`)
+
+**Pilha**: `adicionar`, `buscar`, `remover`, `listar` (além de `topo`)
+
+## Estrutura do projeto
+
+```
+src/
+├── model/
+│   └── InformacaoDoVoo.java    # dados do voo (código, origem, destino, horário, status)
+├── estruturas/
+│   ├── ArvoreBinariaBusca.java
+│   ├── NoArvore.java
+│   ├── FilaPista.java
+│   ├── NoFila.java
+│   ├── PilhaLog.java
+│   └── NoPilha.java
+└── Principal.java              # menu e integração das estruturas
+```
+
+## Como executar
+
+Requisito: **JDK 17 ou superior**.
+
+Na raiz do projeto:
+
+```bash
+javac -d out src/model/InformacaoDoVoo.java src/estruturas/NoArvore.java src/estruturas/ArvoreBinariaBusca.java src/estruturas/NoFila.java src/estruturas/FilaPista.java src/estruturas/NoPilha.java src/estruturas/PilhaLog.java src/Principal.java
+java -cp out Principal
+```
+
+Ou, no VS Code (com a extensão *Extension Pack for Java*), abra o `Principal.java` e clique em **Run**.
+
+## Equipe
+
+| Integrante | Responsabilidade |
+|---|---|
+| Gustavo Caldeira | Classe `InformacaoDoVoo`, `Principal` (menu e integração) |
+| Robert Lima | ABB (`ArvoreBinariaBusca`, `NoArvore`) |
+| Paulo Gabriel | Fila (`FilaPista`, `NoFila`) |
+| Pablo Eduardo | Pilha (`PilhaLog`, `NoPilha`) e README |
