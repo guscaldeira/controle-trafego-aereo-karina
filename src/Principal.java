@@ -1,21 +1,18 @@
 import model.InformacaoDoVoo;
 import estruturas.ArvoreBinariaBusca;
+import estruturas.PilhaLog;
 
 public class Principal {
     
     public static void main(String[] args) {
-        ArvoreBinariaBusca abb = new ArvoreBinariaBusca();
+        PilhaLog log = new PilhaLog();
 
-        abb.inserir(new InformacaoDoVoo("LA300", "Salvador", "São Paulo", "14:30"));
-        abb.inserir(new InformacaoDoVoo("LA100", "Salvador", "Recife", "09:00"));
-        abb.inserir(new InformacaoDoVoo("LA200", "Salvador", "Rio", "11:15"));
-        abb.inserir(new InformacaoDoVoo("LA400", "Salvador", "Brasília", "16:45"));
+        log.adicionar("Voo LA100: arremetida");
+        log.adicionar("Voo LA200: pane no motor");
+        log.adicionar("Pista 1 fechada");
+        System.out.println("Removido: " + log.remover());       // tem que ser "Pista 1 fechada"
+        System.out.println("Busca LA100: " + log.buscar("LA100"));
 
-        abb.percursos();
-
-        System.out.println("Busca LA200: " + abb.buscar("LA200"));
-        abb.remover("LA300");
-        System.out.println("Depois de remover LA300:");
-        abb.emOrdem();
+        log.listar();
     }
 }
