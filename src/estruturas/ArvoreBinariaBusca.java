@@ -34,16 +34,12 @@ public class ArvoreBinariaBusca {
     }
 
     public InformacaoDoVoo buscar(String codigo) {
-        NoArvore atual = raiz;
-        while (atual != null) {
+        for (NoArvore atual = raiz; atual != null; ) {
             int cmp = codigo.compareTo(atual.voo.getCodigo());
             if (cmp == 0) {
                 return atual.voo;
-            } else if (cmp < 0) {
-                atual = atual.esquerda;
-            } else {
-                atual = atual.direita;
             }
+            atual = (cmp < 0) ? atual.esquerda : atual.direita;
         }
         return null;
     }
@@ -83,10 +79,12 @@ public class ArvoreBinariaBusca {
     }
 
     private NoArvore menorNo(NoArvore no) {
-        while (no.esquerda != null) {
-            no = no.esquerda;
+        for (NoArvore atual = no; atual != null; atual = atual.esquerda) {
+            if (atual.esquerda == null) {
+                return atual;
+            }
         }
-        return no;
+        return null;
     }
 
     public void percursos() {

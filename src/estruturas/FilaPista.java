@@ -52,34 +52,28 @@ public class FilaPista {
     }
 
     public InformacaoDoVoo buscar(String codigo) {
-        NoFila atual = inicio;
-        while (atual != null) {
+        for (NoFila atual = inicio; atual != null; atual = atual.getProximo()) {
             if (atual.getVoo().getCodigo().equalsIgnoreCase(codigo)) {
                 return atual.getVoo();
             }
-            atual = atual.getProximo();
         }
         return null;
     }
 
     public int posicao(String codigo) {
-        NoFila atual = inicio;
         int pos = 1;
-        while (atual != null) {
+        for (NoFila atual = inicio; atual != null; atual = atual.getProximo(), pos++) {
             if (atual.getVoo().getCodigo().equalsIgnoreCase(codigo)) {
                 return pos;
             }
-            atual = atual.getProximo();
-            pos++;
         }
         return -1;
     }
 
     public InformacaoDoVoo removerPorCodigo(String codigo) {
-        NoFila anterior = null;
-        NoFila atual = inicio;
+        for (NoFila anterior = null, atual = inicio; atual != null;
+            anterior = atual, atual = atual.getProximo()) {
 
-        while (atual != null) {
             if (atual.getVoo().getCodigo().equalsIgnoreCase(codigo)) {
                 if (anterior == null) {
                     inicio = atual.getProximo();
@@ -92,8 +86,6 @@ public class FilaPista {
                 tamanho--;
                 return atual.getVoo();
             }
-            anterior = atual;
-            atual = atual.getProximo();
         }
         return null;
     }
@@ -104,12 +96,9 @@ public class FilaPista {
             return;
         }
         System.out.println("=== FILA DA PISTA (" + tamanho + " voo(s)) ===");
-        NoFila atual = inicio;
         int pos = 1;
-        while (atual != null) {
+        for (NoFila atual = inicio; atual != null; atual = atual.getProximo(), pos++) {
             System.out.println(pos + "º - " + atual.getVoo());
-            atual = atual.getProximo();
-            pos++;
         }
     }
 }
