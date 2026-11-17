@@ -1,3 +1,4 @@
+package estruturas;
 public class NoArvore {
 
     Voo voo;

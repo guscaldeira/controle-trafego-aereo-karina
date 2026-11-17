@@ -1,3 +1,5 @@
+package estruturas;
+import model.InformacaoDoVoo;
 public class ArvoreBinariaBusca {
 
     private NoArvore raiz;

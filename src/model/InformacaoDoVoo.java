@@ -1,13 +1,13 @@
 package model;
 
 public class InformacaoDoVoo {
-    private int codigo;
+    private String codigo;
     private String origem;
     private String destino;
     private String horario;
     private String status;
 
-    public InformacaoDoVoo(int codigo, String origem, String destino, String horario) {
+    public InformacaoDoVoo(String codigo, String origem, String destino, String horario) {
         this.codigo = codigo;
         this.origem = origem;
         this.destino = destino;
@@ -15,7 +15,7 @@ public class InformacaoDoVoo {
         this.status = "Programado";
     }
 
-    public int getCodigo() {
+    public String getCodigo() {
         return codigo;
     }
 
